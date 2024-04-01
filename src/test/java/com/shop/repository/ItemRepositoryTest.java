@@ -19,6 +19,17 @@ class ItemRepositoryTest {
     ItemRepository itemRepository;
 
     @Test
+    @DisplayName("가격 LessThan 테스트")
+    public void findByPriceLessThanTest(){
+        this.createItemList();
+        List<Item> itemList = itemRepository.findByPriceLessThan(10005);
+        for(Item item : itemList){
+            System.out.println(item.toString());
+            }
+        }
+
+
+    @Test
     @DisplayName("상품명, 상품상세설명 or 테스트")
     public void findByItemNmTestOrItemDetailTest(){
         this.createItemList();
