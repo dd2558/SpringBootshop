@@ -1,6 +1,17 @@
 spring:
   application:
     name: shop
+
+  devtools:
+    restart:
+      enabled: true
+
+    livereload:
+      enabled: true
+
+  thymeleaf:
+    cache: false
+
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/webdb
