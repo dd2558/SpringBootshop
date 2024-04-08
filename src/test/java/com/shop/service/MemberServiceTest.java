@@ -8,9 +8,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.annotation.Commit;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 @SpringBootTest
 @Transactional
 class MemberServiceTest {
@@ -24,7 +24,6 @@ class MemberServiceTest {
 
     @Test
     @DisplayName("회원가입테스트")
-    @Commit
     public void saveMemberTest(){
         Member member = createMember();
         Member savedMember = memberService.saveMember(member);
@@ -44,8 +43,7 @@ class MemberServiceTest {
         memberService.saveMember(member1);
 
         Throwable e = assertThrows(IllegalStateException.class,()->{
-            memberService.saveMember(member2);
-        });
+            memberService.saveMember(member2);});
         assertEquals("이미 가입된 회원입니다", e.getMessage());
     }
 
