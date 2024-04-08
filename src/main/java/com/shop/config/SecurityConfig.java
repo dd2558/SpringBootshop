@@ -14,7 +14,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http.formLogin(form -> form
                 .loginPage("/members/login")
@@ -24,18 +24,23 @@ public class SecurityConfig {
                 .passwordParameter("password")
                 .permitAll());
 
-        http.authorizeHttpRequests(request -> request
+        http.logout(Customizer.withDefaults());
+
+        http.authorizeRequests(request -> request
                 .requestMatchers("/css/**").permitAll()
                 .requestMatchers("/", "/member/**").permitAll()
+                .requestMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated());
 
-        http.logout(Customizer.withDefaults());
+        http.exceptionHandling(exception -> exception
+                .authenticationEntryPoint(new CustomAuthenticationEntryPoint()));
 
         return http.build();
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder()   {
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 }
