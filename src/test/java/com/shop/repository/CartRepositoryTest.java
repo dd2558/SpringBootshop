@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.annotation.Commit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -43,6 +44,7 @@ class CartRepositoryTest {
 
     @Test
     @DisplayName("장바구니 회원 엔티티 매핑 조회 테스트")
+    @Commit
     public void findCartAndMemberTest(){
         Member member = createMember();
         memberRepository.save(member);
