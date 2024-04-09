@@ -2,7 +2,9 @@ package com.shop.entity;
 
 import com.shop.constant.OrderStatus;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
@@ -12,6 +14,8 @@ import java.util.List;
 @Entity
 @Table(name="orders")
 @Getter @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Order {
     @Id @GeneratedValue
     @Column(name = "order_id")
@@ -26,7 +30,7 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItemList = new ArrayList<>();
 
     private LocalDateTime regTime;
