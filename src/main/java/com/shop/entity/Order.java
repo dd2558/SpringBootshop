@@ -1,5 +1,6 @@
 package com.shop.entity;
 
+import com.shop.common.entity.BaseEntity;
 import com.shop.constant.OrderStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -16,7 +17,7 @@ import java.util.List;
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Order {
+public class Order extends BaseEntity {
     @Id @GeneratedValue
     @Column(name = "order_id")
     private Long id;
@@ -30,10 +31,8 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL , orphanRemoval = true)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL , orphanRemoval = true, fetch = FetchType.LAZY)
     private List<OrderItem> orderItems = new ArrayList<>();
 
-    private LocalDateTime regTime;
 
-    private LocalDateTime updateTime;
 }
