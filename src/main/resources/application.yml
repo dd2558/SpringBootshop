@@ -7,7 +7,7 @@ spring:
 
   security:
     user:
-      name: test
+      name: test@test.com
       password: 12345
 
   devtools:
@@ -25,14 +25,25 @@ spring:
     url: jdbc:mysql://localhost:3306/webdb
     username: dd2558
     password: gkehddnjs10
+
   jpa:
     properties:
       hibernate:
         show_sql: true
         format_sql: true
+
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     database-platform: org.hibernate.dialect.MySQL8Dialect
+
+  servlet:
+    multipart:
+      maxFileSize: 20MB
+      maxRequestSize: 100MB
+
+itemImgLocation: C:/shop/item
+
+uploadPath: file:///C:/shop/
 
 logging:
   level:
@@ -41,7 +52,6 @@ logging:
         type:
           descriptor:
             sql: trace
-
 
 
 
