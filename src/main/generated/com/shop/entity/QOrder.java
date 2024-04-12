@@ -22,7 +22,7 @@ public class QOrder extends EntityPathBase<Order> {
 
     public static final QOrder order = new QOrder("order1");
 
-    public final com.shop.common.entity.QBaseEntity _super = new com.shop.common.entity.QBaseEntity(this);
+    public final QBaseEntity _super = new QBaseEntity(this);
 
     //inherited
     public final StringPath createdBy = _super.createdBy;

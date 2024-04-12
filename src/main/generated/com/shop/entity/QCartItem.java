@@ -22,7 +22,7 @@ public class QCartItem extends EntityPathBase<CartItem> {
 
     public static final QCartItem cartItem = new QCartItem("cartItem");
 
-    public final com.shop.common.entity.QBaseEntity _super = new com.shop.common.entity.QBaseEntity(this);
+    public final QBaseEntity _super = new QBaseEntity(this);
 
     public final QCart cart;
 

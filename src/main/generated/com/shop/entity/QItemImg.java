@@ -22,7 +22,7 @@ public class QItemImg extends EntityPathBase<ItemImg> {
 
     public static final QItemImg itemImg = new QItemImg("itemImg");
 
-    public final com.shop.common.entity.QBaseEntity _super = new com.shop.common.entity.QBaseEntity(this);
+    public final QBaseEntity _super = new QBaseEntity(this);
 
     //inherited
     public final StringPath createdBy = _super.createdBy;

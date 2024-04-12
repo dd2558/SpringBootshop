@@ -22,7 +22,7 @@ public class QOrderItem extends EntityPathBase<OrderItem> {
 
     public static final QOrderItem orderItem = new QOrderItem("orderItem");
 
-    public final com.shop.common.entity.QBaseEntity _super = new com.shop.common.entity.QBaseEntity(this);
+    public final QBaseEntity _super = new QBaseEntity(this);
 
     public final NumberPath<Integer> count = createNumber("count", Integer.class);
 

@@ -1,6 +1,5 @@
 package com.shop.entity;
 
-import com.shop.common.entity.BaseEntity;
 import com.shop.constant.ItemSellStatus;
 import com.shop.dto.ItemFormDto;
 import jakarta.persistence.*;

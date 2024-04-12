@@ -1,4 +1,4 @@
-package com.shop.common.entity;
+package com.shop.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
