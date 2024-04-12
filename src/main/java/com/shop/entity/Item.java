@@ -2,6 +2,7 @@ package com.shop.entity;
 
 import com.shop.common.entity.BaseEntity;
 import com.shop.constant.ItemSellStatus;
+import com.shop.dto.ItemFormDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -15,8 +16,8 @@ import lombok.*;
 public class Item extends BaseEntity {
 
     @Id
-    @Column(name="item_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="item_id")
     private Long id;          //상품 코드
 
     @Column(nullable = false, length = 50)
@@ -35,6 +36,11 @@ public class Item extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ItemSellStatus itemSellStatus; // 상품 판매 상태
 
-
-
+    public void updateItem(ItemFormDto itemFormDto) {
+        this.itemNm = itemFormDto.getItemNm();
+        this.price = itemFormDto.getPrice();
+        this.stockNumber = itemFormDto.getStockNumber();
+        this.itemDetail = itemFormDto.getItemDetail();
+        this.itemSellStatus = itemFormDto.getItemSellStatus();
+    }
 }
