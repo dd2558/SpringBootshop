@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @SpringBootTest
@@ -33,8 +32,6 @@ class ShopApplicationTests {
 				.stockNumber(100)
 				.itemDetail("테스트 상품 상세 설명")
 				.itemSellStatus(ItemSellStatus.SELL)
-				.regTime(LocalDateTime.now())
-				.updateTime(LocalDateTime.now())
 				.build();
 
 		System.out.println("==========> item: " + item);
@@ -50,8 +47,6 @@ class ShopApplicationTests {
 					.stockNumber(100 + i)
 					.itemDetail("테스트 상품 상세 설명" + i)
 					.itemSellStatus(ItemSellStatus.SELL)
-					.regTime(LocalDateTime.now())
-					.updateTime(LocalDateTime.now())
 					.build();
 
 			itemRepository.save(item);
