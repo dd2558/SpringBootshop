@@ -22,6 +22,9 @@ public class ItemController {
 
     private final ItemService itemService;
 
+
+    @GetMapping({"/admin/items","/admin/items/{page}"})
+
     @PostMapping("/admin/item/{itemId}")
     public String itemUpdate(@Valid ItemFormDto itemFormDto,
                              BindingResult bindingResult,
