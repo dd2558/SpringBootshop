@@ -1,15 +1,18 @@
 package com.shop.service;
 
 import com.shop.dto.ItemFormDto;
+import com.shop.dto.ItemImgDto;
 import com.shop.entity.Item;
 import com.shop.entity.ItemImg;
 import com.shop.repository.ItemImgRepository;
 import com.shop.repository.ItemRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -42,5 +45,22 @@ public class ItemService {
         }
         return item.getId();
     }
+
+    public ItemFormDto getItemDetail(Long itemId) {
+
+        List<ItemImg> itemImgList = itemImgRepository.findByItemIdOrderByIdAsc(itemId);
+
+        List<ItemImgDto> itemImgDtoList = new ArrayList<>();
+        for(ItemImg itemImg : itemImgList){
+            ItemImgDto itemImgDto = ItemImgDto.entityToDto(itemImg);
+            itemImgDtoList.add(itemImgDto);
+        }
+        Item item = itemRepository.findById(itemId).orElseThrow(() ->
+                new EntityNotFoundException("해당 상품이 존재하지 않습니다. id = " + itemId));
+        ItemFormDto itemFormDto = ItemFormDto.of(item);
+        itemFormDto.setItemImgDtoList(itemImgDtoList);
+        return itemFormDto;
+    }
+
 
 }
