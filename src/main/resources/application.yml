@@ -33,7 +33,7 @@ spring:
         format_sql: true
 
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     database-platform: org.hibernate.dialect.MySQL8Dialect
 
   servlet:
@@ -41,7 +41,7 @@ spring:
       maxFileSize: 20MB
       maxRequestSize: 100MB
 
-itemImgLocation: C:/shop/item
+itemImgLocation: C:/shop/item/
 
 uploadPath: file:///C:/shop/
 
