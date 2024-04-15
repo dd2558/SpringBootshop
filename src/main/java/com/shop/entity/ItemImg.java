@@ -1,37 +1,33 @@
 package com.shop.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
-@Setter
-@Getter
-@ToString
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class ItemImg extends BaseEntity {
+@Getter@Setter
+public class ItemImg {
 
     @Id
+    @Column(name="item_img_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "item_img_id")
     private Long id;
 
-    private String imgName;     //이미지 파일명
+    private String imgName;      //이미지 파일명
 
-    private String oriImgName;     //원본 이미지 파일명
+    private String oriImgName;  //원본 이미지 파일
 
-    private String imgUri;     //이미지 조회 경로
+    private String imgUrl;      //조회 경로
 
-    private String repimgYn;     //대표 이미지 파일명
+    private String repimgYn;     //대표 이미지 여부
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")
     private Item item;
 
-    public void updateItemImg(String oriImgName, String imgName, String imgUri){
+    public void updateItemImg(String oriImgName, String imgName, String imgUrl){
         this.oriImgName = oriImgName;
         this.imgName = imgName;
-        this.imgUri = imgUri;
+        this.imgUrl = imgUrl;
     }
 }

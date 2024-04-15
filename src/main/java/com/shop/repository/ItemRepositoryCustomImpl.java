@@ -2,6 +2,7 @@ package com.shop.repository;
 
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Wildcard;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.shop.constant.ItemSellStatus;
 import com.shop.dto.ItemSearchDto;
@@ -19,7 +20,7 @@ import org.thymeleaf.util.StringUtils;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
+public class ItemRepositoryCustomImpl implements ItemRepositoryCustom{
 
     private JPAQueryFactory queryFactory;
 
@@ -29,11 +30,6 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
 
     private BooleanExpression searchSellStatusEq(ItemSellStatus searchSellStatus){
         return searchSellStatus == null ? null : QItem.item.itemSellStatus.eq(searchSellStatus);
-    }
-
-    private BooleanExpression itemNmLike(String searchQuery){
-        return StringUtils.isEmpty(searchQuery) ?
-                null : QItem.item.itemNm.like("%"+searchQuery+"%");
     }
 
     private BooleanExpression regDtsAfter(String searchDateType){
@@ -62,11 +58,17 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
         } else if(StringUtils.equals("createdBy", searchBy)){
             return QItem.item.createdBy.like("%" + searchQuery + "%");
         }
+
         return null;
+    }
+
+    private BooleanExpression itemNmLike(String searchQuery){
+        return StringUtils.isEmpty(searchQuery) ? null : QItem.item.itemNm.like("%" + searchQuery + "%");
     }
 
     @Override
     public Page<Item> getAdminItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {
+
         QueryResults<Item> results = queryFactory
                 .selectFrom(QItem.item)
                 .where(regDtsAfter(itemSearchDto.getSearchDateType()),
@@ -80,7 +82,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
 
         List<Item> content = results.getResults();
         long total = results.getTotal();
-        return new PageImpl<>(content,pageable,total);
+        return new PageImpl<>(content, pageable,total);
     }
 
     @Override
@@ -88,26 +90,35 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
         QItem item = QItem.item;
         QItemImg itemImg = QItemImg.itemImg;
 
-        QueryResults<MainItemDto> results = queryFactory
+        List<MainItemDto> content = queryFactory
                 .select(
                         new QMainItemDto(
                                 item.id,
                                 item.itemNm,
                                 item.itemDetail,
-                                itemImg.imgUri,
+                                itemImg.imgUrl,
                                 item.price)
                 )
                 .from(itemImg)
-                .join(itemImg.item,item)
+                .join(itemImg.item, item)
                 .where(itemImg.repimgYn.eq("Y"))
                 .where(itemNmLike(itemSearchDto.getSearchQuery()))
                 .orderBy(item.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .fetchResults();
+                .fetch();
 
-        List<MainItemDto> content = results.getResults();
-        long total = results.getTotal();
-        return new PageImpl<>(content,pageable,total);
+        long total = queryFactory
+                .select(Wildcard.count)
+                .from(itemImg)
+                .join(itemImg.item, item)
+                .where(itemImg.repimgYn.eq("Y"))
+                .where(itemNmLike(itemSearchDto.getSearchQuery()))
+                .fetchOne()
+                ;
+
+        return new PageImpl<>(content, pageable, total);
     }
+
+
 }

@@ -14,15 +14,14 @@ import org.thymeleaf.util.StringUtils;
 @RequiredArgsConstructor
 @Transactional
 public class ItemImgService {
-
-    @Value("C:/shop/item")  //@Value("${itemLocation}")
+    @Value("C:/shop/item")
     private String itemImgLocation;
 
     private final ItemImgRepository itemImgRepository;
 
     private final FileService fileService;
 
-    public void saveItemImg(ItemImg itemImg, MultipartFile itemImgFile) throws Exception{
+    public void saveItemImg(ItemImg iTemImg, MultipartFile itemImgFile) throws Exception{
 
         String oriImgName = itemImgFile.getOriginalFilename();
         String imgName = "";
@@ -31,35 +30,32 @@ public class ItemImgService {
         //파일 업로드
         if(!StringUtils.isEmpty(oriImgName)){
             imgName = fileService.uploadFile(itemImgLocation, oriImgName, itemImgFile.getBytes());
-            imgUrl = "/image/item/" + imgName;
+            imgUrl = "/images/item/" + imgName;
         }
 
         //상품 이미지 정보 저장
-        itemImg.updateItemImg(oriImgName, imgName, imgUrl);
-        itemImgRepository.save(itemImg);
+        iTemImg.updateItemImg(oriImgName, imgName, imgUrl);
+        itemImgRepository.save(iTemImg);
     }
+
     public void updateItemImg(Long itemImgId, MultipartFile itemImgFile) throws Exception {
 
+        ItemImg itemImg = itemImgRepository.findById(itemImgId).orElseThrow(EntityNotFoundException::new);
+        //기존 파일 삭제
         if(!itemImgFile.isEmpty()) {
-            ItemImg itemImg = itemImgRepository.findById(itemImgId).orElseThrow(EntityNotFoundException::new);
-
-            if(!StringUtils.isEmpty(itemImg.getImgName())){
-                fileService.deleteFile(itemImgLocation + "/" + itemImg.getImgName());
-            }
-
-            String oriImgName = itemImgFile.getOriginalFilename();
-            String imgName = "";
-            String imgUrl = "";
-
-            //파일 업로드
-            if(!StringUtils.isEmpty(oriImgName)){
-                imgName = fileService.uploadFile(itemImgLocation, oriImgName, itemImgFile.getBytes());
-                imgUrl = "/image/item/" + imgName;
-            }
-
-            //변경감지 - Dirty Checking
-            itemImg.updateItemImg(oriImgName, imgName, imgUrl);
+            fileService.deleteFile(itemImgLocation + "/" + itemImg.getImgName());
         }
-    }
 
+        String oriImgName = itemImgFile.getOriginalFilename();
+        String imgName = "";
+        String imgUrl = "";
+
+        //새로운 파일 업로드 지정
+        if(!StringUtils.isEmpty(oriImgName)){
+            imgName = fileService.uploadFile(itemImgLocation, oriImgName, itemImgFile.getBytes());
+            imgUrl = "/image/item/" + imgName;
+        }
+        //변경감지 - 더티체킹
+        itemImg.updateItemImg(oriImgName, imgName, imgUrl);
+    }
 }
