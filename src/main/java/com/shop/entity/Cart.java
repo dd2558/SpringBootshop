@@ -11,8 +11,8 @@ import lombok.ToString;
 public class Cart extends BaseEntity {
 
     @Id
-    @Column(name = "cart_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "cart_id")
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
