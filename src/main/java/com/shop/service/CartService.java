@@ -14,6 +14,7 @@ import com.shop.repository.ItemRepository;
 import com.shop.repository.MemberRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.util.StringUtils;
@@ -57,7 +58,7 @@ public class CartService {
     }
 
     @Transactional(readOnly = true)
-    public List<CartDetailDto> getCartList(String email){
+    public List<CartDetailDto> getCartList(@Param("email") String email) {
 
         List<CartDetailDto> cartDetailDtoList = new ArrayList<>();
 
