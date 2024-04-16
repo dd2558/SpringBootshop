@@ -27,7 +27,7 @@ public class SecurityConfig {
         http.logout(Customizer.withDefaults());
 
         http .authorizeRequests(request -> request
-                .requestMatchers("/images/**", "/css/**").permitAll()
+                .requestMatchers("/images/**","/members/**", "/css/**").permitAll()
                 .requestMatchers("/", "/member/**").permitAll()
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated());
